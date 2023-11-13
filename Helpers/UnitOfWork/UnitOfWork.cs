@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using PracticeAPI.Models;
+﻿using PracticeAPI.Models;
 using PracticeAPI.Repositories;
 using PracticeAPI.Repositories.Contracts;
 
@@ -8,18 +7,18 @@ namespace PracticeAPI.Helpers.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MyStoreContext _context;
-        private readonly IMapper _mapper;
 
-        public UnitOfWork(MyStoreContext context, IMapper mapper)
+        public UnitOfWork(MyStoreContext context)
         {
             _context = context;
-            _mapper = mapper;
-            CategoryRepository = new CategoryRepository(_context, _mapper);
-            ProductRepository = new ProductRepository(_context, _mapper);
+            CategoryRepository = new CategoryRepository(_context);
+            ProductRepository = new ProductRepository(_context);
+            CustomerRepository = new CustomerRepository(_context);
         }
 
         public ICategoryRepository CategoryRepository { get; }
         public IProductRepository ProductRepository { get; }
+        public ICustomerRepository CustomerRepository { get; }
 
         public async Task SaveChangesAsync()
         {

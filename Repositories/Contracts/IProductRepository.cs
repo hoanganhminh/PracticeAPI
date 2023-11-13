@@ -1,5 +1,4 @@
 ﻿using PracticeAPI.Models;
-using PracticeAPI.Models.Data.RequestDTO;
 
 namespace PracticeAPI.Repositories.Contracts
 {
@@ -7,9 +6,9 @@ namespace PracticeAPI.Repositories.Contracts
     {
         Task<List<Product>> GetAllProducts();
         Task<Product> GetProductById(int id);
-        void AddProduct(ProductRequestDTO productRequestDTO);
-        void UpdateProduct(ProductRequestDTO productRequestDTO);
-        void DeleteProduct(Product product);
+        void AddProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(int id);
         Task SaveAsync();
     }
 

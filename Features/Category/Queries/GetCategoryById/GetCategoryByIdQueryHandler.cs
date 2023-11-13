@@ -20,7 +20,7 @@ namespace PracticeAPI.Features.Category.Queries.GetCategoryById
         public async Task<CategoryResponseDTO> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var category = await _unitOfWork.CategoryRepository.GetCategoryById(request.CategoryId);
-            return category;
+            return _mapper.Map<CategoryResponseDTO>(category);
         }
     }
 }

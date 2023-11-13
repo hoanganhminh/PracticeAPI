@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PracticeAPI.Models;
+using PracticeAPI.Features.Product.Commands.CreateProduct;
+using PracticeAPI.Features.Product.Commands.DeleteProduct;
+using PracticeAPI.Features.Product.Commands.UpdateProduct;
+using PracticeAPI.Features.Product.Queries.GetAllProducts;
+using PracticeAPI.Features.Product.Queries.GetProductById;
 using PracticeAPI.Models.Data.RequestDTO;
 using PracticeAPI.Models.Data.ResponseDTO;
-using PracticeAPI.Services;
-using PracticeAPI.Services.Contracts;
 
 namespace PracticeAPI.Controllers
 {
@@ -17,20 +14,19 @@ namespace PracticeAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IMediator _mediator;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IMediator mediator)
         {
-            _productService = productService;
+            _mediator = mediator;
         }
 
-        // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProducts()
         {
             try
             {
-                var response = await _productService.GetAllProducts();
+                var response = await _mediator.Send(new GetAllProductsQuery());
                 return Ok(response);
             }
             catch
@@ -39,18 +35,16 @@ namespace PracticeAPI.Controllers
             }
         }
 
-        // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDTO>> GetProduct(int id)
         {
             try
             {
-                var product = await _productService.GetProductById(id);
+                var product = await _mediator.Send(new GetProductByIdQuery { Id = id});
                 if (product == null)
                 {
                     return NotFound();
                 }
-
                 return Ok(product);
             }
             catch
@@ -59,20 +53,12 @@ namespace PracticeAPI.Controllers
             }
         }
 
-
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequestDTO productRequestDTO)
         {
-            if (id != productRequestDTO.ProductId)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                var updatedProduct = await _productService.UpdateProduct(productRequestDTO);
+                await _mediator.Send(new UpdateProductCommand { ProductRequestDTO = productRequestDTO});
                 return NoContent();
             }
             catch (Exception ex)
@@ -81,16 +67,13 @@ namespace PracticeAPI.Controllers
             }
         }
 
-
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] ProductRequestDTO productRequestDTO)
+        public async Task<ActionResult> CreateProduct([FromBody] ProductRequestDTO productRequestDTO)
         {
             try
             {
-                var createdProduct = await _productService.CreateProduct(productRequestDTO);
-                return CreatedAtAction("GetProduct", new { id = createdProduct.ProductId }, createdProduct);
+                var createdProduct = _mediator.Send(new CreateProductCommand { ProductRequestDTO = productRequestDTO });
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -99,18 +82,12 @@ namespace PracticeAPI.Controllers
         }
 
 
-        // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
             {
-                var deleted = await _productService.DeleteProduct(id);
-                if (!deleted)
-                {
-                    return NotFound();
-                }
-
+                await _mediator.Send(new DeleteProductCommand { Id = id });
                 return NoContent();
             }
             catch (Exception ex)

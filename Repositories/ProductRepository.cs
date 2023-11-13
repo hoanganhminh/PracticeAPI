@@ -10,12 +10,10 @@ namespace PracticeAPI.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly MyStoreContext _context;
-        private readonly IMapper _mapper;
 
-        public ProductRepository(MyStoreContext context, IMapper mapper)
+        public ProductRepository(MyStoreContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<List<Product>> GetAllProducts()
@@ -45,11 +43,10 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public void AddProduct(ProductRequestDTO productRequestDTO)
+        public void AddProduct(Product product)
         {
             try
             {
-                var product = _mapper.Map<Product>(productRequestDTO);
                 _context.Products.Add(product);
             }
             catch (Exception ex)
@@ -58,11 +55,10 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public void UpdateProduct(ProductRequestDTO productRequestDTO)
+        public void UpdateProduct(Product product)
         {
             try
             {
-                var product = _mapper.Map<Product>(productRequestDTO);
                 _context.Products.Update(product);
             }
             catch (Exception ex)
@@ -71,11 +67,15 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public void DeleteProduct(Product product)
+        public void DeleteProduct(int id)
         {
             try
             {
-                _context.Products.Remove(product);
+                var product = _context.Products.Find(id);
+                if (product != null)
+                {
+                    _context.Products.Remove(product);
+                }
             }
             catch (Exception ex)
             {

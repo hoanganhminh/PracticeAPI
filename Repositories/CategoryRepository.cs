@@ -10,22 +10,20 @@ namespace PracticeAPI.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly MyStoreContext _context;
-        private readonly IMapper _mapper;
 
-        public CategoryRepository(MyStoreContext context, IMapper mapper)
+        public CategoryRepository(MyStoreContext context)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
-        public async Task<List<CategoryResponseDTO>> GetAllCategories()
+        public async Task<List<Category>> GetAllCategories()
         {
             try
             {
                 var categories = await _context.Categories
                     .Include(x => x.Products)
                     .ToListAsync();
-                return _mapper.Map<List<CategoryResponseDTO>>(categories);
+                return categories;
             }
             catch (Exception ex)
             {
@@ -33,12 +31,12 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public async Task<CategoryResponseDTO> GetCategoryById(int id)
+        public async Task<Category> GetCategoryById(int id)
         {
             try
             {
                 var category = await _context.Categories.FindAsync(id);
-                return _mapper.Map<CategoryResponseDTO>(category);
+                return category;
             }
             catch (Exception ex)
             {
@@ -46,11 +44,10 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public void UpdateCategory(CategoryRequestDTO categoryRequestDTO)
+        public void UpdateCategory(Category category)
         {
             try
             {
-                var category = _mapper.Map<Category>(categoryRequestDTO);
                 _context.Categories.Update(category);
             }
             catch (Exception ex)
@@ -59,11 +56,10 @@ namespace PracticeAPI.Repositories
             }
         }
 
-        public void AddCategory(CategoryRequestDTO categoryRequestDTO)
+        public void AddCategory(Category category)
         {
             try
             {
-                var category = _mapper.Map<Category>(categoryRequestDTO);
                 _context.Categories.Add(category);
             }
             catch (Exception ex)
@@ -76,22 +72,13 @@ namespace PracticeAPI.Repositories
         {
             try
             {
-                var category = _context.Categories.Find(id); 
-                _context.Categories.Remove(category);
+                var category = _context.Categories.Find(id);
+                if (category != null)
+                {
+                    _context.Categories.Remove(category);
+                }
             }
             catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException ex)
             {
                 throw new Exception(ex.Message);
             }

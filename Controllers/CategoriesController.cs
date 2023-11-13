@@ -54,7 +54,7 @@ namespace PracticeAPI.Controllers
         {
             try
             {
-                await _mediator.Send(new UpdateCategoryCommand { categoryRequestDTO = categoryRequestDTO, id = id });
+                await _mediator.Send(new UpdateCategoryCommand { CategoryRequestDTO = categoryRequestDTO, Id = id });
                 return NoContent();
             }
             catch (Exception ex)

@@ -6,11 +6,10 @@ namespace PracticeAPI.Repositories.Contracts
 {
     public interface ICategoryRepository
     {
-        public Task<List<CategoryResponseDTO>> GetAllCategories();
-        Task<CategoryResponseDTO> GetCategoryById(int id);
-        void UpdateCategory(CategoryRequestDTO categoryRequestDTO);
-        void AddCategory(CategoryRequestDTO categoryRequestDTO);
+        public Task<List<Category>> GetAllCategories();
+        Task<Category> GetCategoryById(int id);
+        void UpdateCategory(Category category);
+        void AddCategory(Category category);
         void DeleteCategory(int id);
-        Task SaveChangesAsync();
     }
 }
