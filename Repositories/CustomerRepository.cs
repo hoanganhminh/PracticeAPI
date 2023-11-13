@@ -91,7 +91,10 @@ namespace PracticeAPI.Repositories
             try
             {
                 var customer = _context.Customers.Find(id);
-                _context.Customers.Remove(customer);
+                if (customer != null)
+                {
+                    _context.Customers.Remove(customer);
+                }
             }
             catch (Exception ex)
             {

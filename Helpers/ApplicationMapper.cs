@@ -14,6 +14,7 @@ namespace PracticeAPI.Helpers
             CreateMap<Category, CategoryRequestDTO>().ReverseMap();
             CreateMap<Category, CategoryResponseDTO>().ReverseMap();
             CreateMap<Customer, CustomerRequestDTO>().ReverseMap();
+            CreateMap<Customer, LoginRequestDTO>().ReverseMap();
             CreateMap<Customer, CustomerResponseDTO>().ReverseMap();
         }
     }

@@ -16,10 +16,6 @@ namespace PracticeAPI.Features.Category.Commands.UpdateCategory
         }
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            if(request.CategoryRequestDTO is null)
-            {
-                throw new ArgumentException("Missing Value");
-            }
             request.Id = request.CategoryRequestDTO.CategoryId;
             var category = _mapper.Map<Models.Category>(request.CategoryRequestDTO);
             _unitOfWork.CategoryRepository.UpdateCategory(category);

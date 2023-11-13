@@ -3,12 +3,8 @@ using System.Collections.Generic;
 
 namespace PracticeAPI.Models.Data.RequestDTO;
 
-public class CustomerRequestDTO
+public class LoginRequestDTO
 {
-    public int CustomerId { get; set; }
-
-    public string CustomerName { get; set; }
-
     public string Email { get; set; }
 
     public string Password { get; set; }

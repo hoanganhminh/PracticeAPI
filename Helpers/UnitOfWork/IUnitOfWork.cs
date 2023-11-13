@@ -6,7 +6,6 @@ namespace PracticeAPI.Helpers.UnitOfWork
     {
         ICategoryRepository CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
-
         ICustomerRepository CustomerRepository { get; }
 
         Task SaveChangesAsync();

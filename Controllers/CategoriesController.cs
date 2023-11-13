@@ -5,8 +5,8 @@ using PracticeAPI.Features.Category.Commands.DeleteCategory;
 using PracticeAPI.Features.Category.Commands.UpdateCategory;
 using PracticeAPI.Features.Category.Queries.GetAllCategories;
 using PracticeAPI.Features.Category.Queries.GetCategoryById;
-using PracticeAPI.Models;
 using PracticeAPI.Models.Data.RequestDTO;
+using PracticeAPI.Models.Data.ResponseDTO;
 
 namespace PracticeAPI.Controllers
 {
@@ -22,7 +22,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryResponseDTO>>> GetCategories()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategoryById(int id)
+        public async Task<ActionResult<CategoryResponseDTO>> GetCategoryById(int id)
         {
             try
             {

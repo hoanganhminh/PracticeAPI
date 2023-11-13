@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PracticeAPI.Models;
+using PracticeAPI.Features.Customer.Commands.CreateCustomer;
+using PracticeAPI.Features.Customer.Commands.DeleteCustomer;
+using PracticeAPI.Features.Customer.Commands.UpdateCustomer;
+using PracticeAPI.Features.Customer.Queries.GetAllCustomers;
+using PracticeAPI.Features.Customer.Queries.GetCustomerById;
+using PracticeAPI.Features.Customer.Queries.Login;
+using PracticeAPI.Models.Data.RequestDTO;
+using PracticeAPI.Models.Data.ResponseDTO;
 
 namespace PracticeAPI.Controllers
 {
@@ -13,111 +15,95 @@ namespace PracticeAPI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly MyStoreContext _context;
+        private readonly IMediator _mediator;
 
-        public CustomersController(MyStoreContext context)
+        public CustomersController(IMediator mediator)
         {
-            _context = context;
+            this._mediator = mediator;
         }
 
-        // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> GetAllCustomers()
         {
-          if (_context.Customers == null)
-          {
-              return NotFound();
-          }
-            return await _context.Customers.ToListAsync();
-        }
-
-        // GET: api/Customers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
-        {
-          if (_context.Customers == null)
-          {
-              return NotFound();
-          }
-            var customer = await _context.Customers.FindAsync(id);
-
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return customer;
-        }
-
-        // PUT: api/Customers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer customer)
-        {
-            if (id != customer.CustomerId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(customer).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var customers = await _mediator.Send(new GetAllCustomersQuery());
+                return Ok(customers);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest($"Error: {ex.Message}");
             }
-
-            return NoContent();
         }
 
-        // POST: api/Customers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CustomerResponseDTO>> GetCustomerById(int id)
         {
-          if (_context.Customers == null)
-          {
-              return Problem("Entity set 'MyStoreContext.Customers'  is null.");
-          }
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
+            try
+            {
+                var customer = await _mediator.Send(new GetCustomerByIdQuery { CustomerId = id });
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
         }
 
-        // DELETE: api/Customers/5
+        [HttpPost("Login")]
+        public async Task<ActionResult<CustomerResponseDTO>> Login(string email, string password)
+        {
+            try
+            {
+                var customer = await _mediator.Send(new LoginQuery { Email = email, Password = password });
+                return customer;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCustomer(int id, CustomerRequestDTO customerRequestDTO)
+        {
+            try
+            {
+                await _mediator.Send(new UpdateCustomerCommand { Id = id, CustomerRequestDTO = customerRequestDTO });
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("CreateCustomer")]
+        public async Task<IActionResult> CreateCustomer(CustomerRequestDTO customerRequestDTO)
+        {
+            try
+            {
+                await _mediator.Send(new CreateCustomerCommand { CustomerRequestDTO = customerRequestDTO });
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem($"Error: {ex.Message}");
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            if (_context.Customers == null)
+            try
             {
-                return NotFound();
+                await _mediator.Send(new DeleteCustomerCommand { Id = id });
+                return NoContent();
             }
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return Problem($"Error: {ex.Message}");
             }
-
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();
         }
     }
 }
