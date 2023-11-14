@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeAPI.Features.Category.Commands.CreateCategory;
 using PracticeAPI.Features.Category.Commands.DeleteCategory;
@@ -50,6 +51,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequestDTO categoryRequestDTO)
         {
             try
@@ -64,6 +66,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryRequestDTO categoryRequestDTO)
         {
             try
@@ -78,6 +81,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             try

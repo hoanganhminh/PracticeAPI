@@ -16,7 +16,7 @@ namespace PracticeAPI.Features.Category.Commands.UpdateCategory
         }
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            request.Id = request.CategoryRequestDTO.CategoryId;
+            request.CategoryRequestDTO.CategoryId = request.Id;
             var category = _mapper.Map<Models.Category>(request.CategoryRequestDTO);
             _unitOfWork.CategoryRepository.UpdateCategory(category);
             await _unitOfWork.SaveChangesAsync();

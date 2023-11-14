@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Azure;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeAPI.Features.Customer.Commands.CreateCustomer;
 using PracticeAPI.Features.Customer.Commands.DeleteCustomer;
@@ -11,6 +13,7 @@ using PracticeAPI.Models.Data.ResponseDTO;
 
 namespace PracticeAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -51,12 +54,14 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<CustomerResponseDTO>> Login(string email, string password)
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponseDTO>> Login(string email, string password)
         {
             try
             {
-                var customer = await _mediator.Send(new LoginQuery { Email = email, Password = password });
-                return customer;
+                var loginResponseDTO = await _mediator.Send(new LoginQuery { Email = email, Password = password });
+                Response.Cookies.Append("jwtToken", loginResponseDTO.Token);
+                return loginResponseDTO;
             }
             catch (Exception ex)
             {
@@ -79,6 +84,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPost("CreateCustomer")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateCustomer(CustomerRequestDTO customerRequestDTO)
         {
             try

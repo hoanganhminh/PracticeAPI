@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeAPI.Features.Product.Commands.CreateProduct;
 using PracticeAPI.Features.Product.Commands.DeleteProduct;
@@ -54,6 +55,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequestDTO productRequestDTO)
         {
             try
@@ -68,6 +70,7 @@ namespace PracticeAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> CreateProduct([FromBody] ProductRequestDTO productRequestDTO)
         {
             try
@@ -83,6 +86,7 @@ namespace PracticeAPI.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
