@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Features.Category.Commands.UpdateCategory;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Models.Data.ResponseDTO;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Customer.Queries.GetCustomerById
 {
@@ -19,7 +19,7 @@ namespace PracticeAPI.Features.Customer.Queries.GetCustomerById
 
         public async Task<CustomerResponseDTO> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            var customer = await _unitOfWork.CustomerRepository.GetCustomerById(request.CustomerId);
+            var customer = await _unitOfWork.CustomerRepository.GetById(request.CustomerId);
             return _mapper.Map<CustomerResponseDTO>(customer);
         }
     }

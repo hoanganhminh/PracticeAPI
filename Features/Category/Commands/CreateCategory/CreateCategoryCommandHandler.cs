@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Models;
 using PracticeAPI.Repositories.Contracts;
 
@@ -20,7 +19,7 @@ namespace PracticeAPI.Features.Category.Commands.CreateCategory
         public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = _mapper.Map<Models.Category>(request.CategoryRequestDTO);
-            _unitOfWork.CategoryRepository.AddCategory(category);
+            _unitOfWork.CategoryRepository.Add(category);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

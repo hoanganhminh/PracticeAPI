@@ -7,7 +7,6 @@ using PracticeAPI.Models;
 using PracticeAPI.Helpers;
 using System.Reflection;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Security.Claims;
@@ -20,25 +19,18 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddAutoMapper(typeof(ApplicationMapper));
 builder.Services.AddDbContext<MyStoreContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyStore"));
 });
-
 builder.Services.AddCors();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITokenService, TokenService>();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Practice API", Version = "v1" });
@@ -67,12 +59,10 @@ builder.Services.AddSwaggerGen(c =>
             }
         });
 });
-
 builder.Services.Configure<SwaggerGeneratorOptions>(options =>
 {
     options.InferSecuritySchemes = true;
 });
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;
@@ -98,7 +88,6 @@ builder.Services.AddAuthorization(x =>
 {
     x.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Email, "Admin"));
 });
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Features.Category.Commands.CreateCategory;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Product.Commands.CreateProduct
@@ -19,7 +18,7 @@ namespace PracticeAPI.Features.Product.Commands.CreateProduct
         public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var product = _mapper.Map<Models.Product>(request.ProductRequestDTO);
-            _unitOfWork.ProductRepository.AddProduct(product);
+            _unitOfWork.ProductRepository.Add(product);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Category.Commands.UpdateCategory
 {
@@ -18,7 +18,7 @@ namespace PracticeAPI.Features.Category.Commands.UpdateCategory
         {
             request.CategoryRequestDTO.CategoryId = request.Id;
             var category = _mapper.Map<Models.Category>(request.CategoryRequestDTO);
-            _unitOfWork.CategoryRepository.UpdateCategory(category);
+            _unitOfWork.CategoryRepository.Update(category);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

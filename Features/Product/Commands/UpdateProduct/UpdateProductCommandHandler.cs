@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Product.Commands.UpdateProduct
 {
@@ -17,7 +17,7 @@ namespace PracticeAPI.Features.Product.Commands.UpdateProduct
         public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = _mapper.Map<Models.Product>(request.ProductRequestDTO);
-            _unitOfWork.ProductRepository.UpdateProduct(product);
+            _unitOfWork.ProductRepository.Update(product);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

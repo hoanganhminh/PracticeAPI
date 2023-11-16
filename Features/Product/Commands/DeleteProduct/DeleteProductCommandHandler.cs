@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Product.Commands.DeleteProduct
 {
@@ -16,7 +16,8 @@ namespace PracticeAPI.Features.Product.Commands.DeleteProduct
         }
         public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            _unitOfWork.ProductRepository.DeleteProduct(request.Id);
+            var product = await _unitOfWork.ProductRepository.GetById(request.Id);
+            _unitOfWork.ProductRepository.Remove(product);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

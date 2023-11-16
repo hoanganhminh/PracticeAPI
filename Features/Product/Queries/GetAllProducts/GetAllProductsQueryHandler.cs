@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Models.Data.ResponseDTO;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Product.Queries.GetAllProducts
 {
@@ -16,7 +16,7 @@ namespace PracticeAPI.Features.Product.Queries.GetAllProducts
         }
         public async Task<List<ProductResponseDTO>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var products = await _unitOfWork.ProductRepository.GetAllProducts();
+            var products = await _unitOfWork.ProductRepository.GetAll();
             return _mapper.Map<List<ProductResponseDTO>>(products);
         }
     }

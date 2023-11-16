@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Models.Data.ResponseDTO;
 using PracticeAPI.Repositories.Contracts;
 
@@ -19,7 +18,7 @@ namespace PracticeAPI.Features.Category.Queries.GetCategoryById
 
         public async Task<CategoryResponseDTO> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var category = await _unitOfWork.CategoryRepository.GetCategoryById(request.CategoryId);
+            var category = await _unitOfWork.CategoryRepository.GetById(request.CategoryId);
             return _mapper.Map<CategoryResponseDTO>(category);
         }
     }

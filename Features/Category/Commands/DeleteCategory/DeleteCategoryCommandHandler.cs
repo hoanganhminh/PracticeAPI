@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Models;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Category.Commands.DeleteCategory
 {
@@ -20,8 +21,12 @@ namespace PracticeAPI.Features.Category.Commands.DeleteCategory
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            _unitOfWork.CategoryRepository.DeleteCategory(request.Id);
-            await _unitOfWork.SaveChangesAsync();
+            Models.Category category = await _unitOfWork.CategoryRepository.GetById(request.Id);
+            if (category != null)
+            {
+                _unitOfWork.CategoryRepository.Remove(category);
+                await _unitOfWork.SaveChangesAsync();
+            }
             return Unit.Value;
         }
     }

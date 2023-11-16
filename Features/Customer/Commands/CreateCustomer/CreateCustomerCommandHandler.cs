@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Customer.Commands.CreateCustomer
 {
@@ -18,7 +18,7 @@ namespace PracticeAPI.Features.Customer.Commands.CreateCustomer
         public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = _mapper.Map<Models.Customer>(request.CustomerRequestDTO);
-            _unitOfWork.CustomerRepository.AddCustomer(customer);
+            _unitOfWork.CustomerRepository.Add(customer);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

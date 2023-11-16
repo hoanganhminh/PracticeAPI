@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Helpers.UnitOfWork;
+using PracticeAPI.Repositories.Contracts;
 
 namespace PracticeAPI.Features.Customer.Commands.UpdateCustomer
 {
@@ -19,7 +19,7 @@ namespace PracticeAPI.Features.Customer.Commands.UpdateCustomer
         {
             request.Id = request.CustomerRequestDTO.CustomerId;
             var customer = _mapper.Map<Models.Customer>(request.CustomerRequestDTO);
-            _unitOfWork.CustomerRepository.UpdateCustomer(customer);
+            _unitOfWork.CustomerRepository.Update(customer);
             await _unitOfWork.SaveChangesAsync();
             return Unit.Value;
         }

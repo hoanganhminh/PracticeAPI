@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Features.Category.Commands.UpdateCategory;
-using PracticeAPI.Helpers.UnitOfWork;
 using PracticeAPI.Models.Data.ResponseDTO;
+using PracticeAPI.Repositories.Contracts;
 using PracticeAPI.Services.Contracts;
 
 namespace PracticeAPI.Features.Customer.Queries.Login
@@ -26,7 +26,7 @@ namespace PracticeAPI.Features.Customer.Queries.Login
             {
                 throw new ArgumentNullException("Email or Password can not be null");
             }
-            var customer = await _unitOfWork.CustomerRepository.Login(request.Email, request.Password);
+            var customer = await _unitOfWork.CustomerRepository.GetOneByProperties(request.Email, "Email", request.Password, "Password");
 
             var customerResponseDTO = _mapper.Map<CustomerResponseDTO>(customer);
             var token = _tokenService.CreateToken(customerResponseDTO);
