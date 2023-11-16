@@ -1,20 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Customer.Commands.DeleteCustomer
 {
-    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Unit>
+    public class DeleteCustomerCommandHandler : BaseService, IRequestHandler<DeleteCustomerCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
+        public DeleteCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
         public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = await _unitOfWork.CustomerRepository.GetById(request.Id);

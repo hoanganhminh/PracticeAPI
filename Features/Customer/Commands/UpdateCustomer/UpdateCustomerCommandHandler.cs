@@ -1,20 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Customer.Commands.UpdateCustomer
 {
-    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand,Unit>
+    public class UpdateCustomerCommandHandler : BaseService, IRequestHandler<UpdateCustomerCommand,Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UpdateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
+        public UpdateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
         public async Task<Unit> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             request.Id = request.CustomerRequestDTO.CustomerId;

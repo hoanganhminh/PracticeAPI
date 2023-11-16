@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Category.Commands.UpdateCategory
 {
-    public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Unit>
+    public class UpdateCategoryCommandHandler : BaseService, IRequestHandler<UpdateCategoryCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
-        }
+        public UpdateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             request.CategoryRequestDTO.CategoryId = request.Id;

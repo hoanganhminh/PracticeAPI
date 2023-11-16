@@ -1,10 +1,3 @@
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.csproj.AssemblyReference.cache
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.GeneratedMSBuildEditorConfig.editorconfig
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.AssemblyInfoInputs.cache
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.AssemblyInfo.cs
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.csproj.CoreCompileInputs.cache
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.MvcApplicationPartsAssemblyInfo.cs
-F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.MvcApplicationPartsAssemblyInfo.cache
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\appsettings.Development.json
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\appsettings.json
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\PracticeAPI.exe
@@ -244,6 +237,13 @@ F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\Syst
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 F:\Practice\BackEnd\C#\PracticeAPI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.csproj.AssemblyReference.cache
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.GeneratedMSBuildEditorConfig.editorconfig
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.AssemblyInfoInputs.cache
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.AssemblyInfo.cs
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.csproj.CoreCompileInputs.cache
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.MvcApplicationPartsAssemblyInfo.cs
+F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\PracticeAPI.MvcApplicationPartsAssemblyInfo.cache
 F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\staticwebassets\msbuild.PracticeAPI.Microsoft.AspNetCore.StaticWebAssets.props
 F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.PracticeAPI.props
 F:\Practice\BackEnd\C#\PracticeAPI\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.PracticeAPI.props

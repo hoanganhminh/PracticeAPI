@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Customer.Commands.CreateCustomer
 {
-    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Unit>
+    public class CreateCustomerCommandHandler : BaseService, IRequestHandler<CreateCustomerCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+        public CreateCustomerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
 
         public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {

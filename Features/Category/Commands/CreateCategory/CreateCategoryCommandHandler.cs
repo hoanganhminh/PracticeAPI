@@ -1,21 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PracticeAPI.Models;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
+using PracticeAPI.Services.Contracts;
 
 namespace PracticeAPI.Features.Category.Commands.CreateCategory
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Unit>
+    public class CreateCategoryCommandHandler : BaseService, IRequestHandler<CreateCategoryCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        public CreateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
 
-        public CreateCategoryCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
         public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = _mapper.Map<Models.Category>(request.CategoryRequestDTO);

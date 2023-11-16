@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Product.Commands.DeleteProduct
 {
-    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Unit>
+    public class DeleteProductCommandHandler : BaseService, IRequestHandler<DeleteProductCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public DeleteProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
-        }
+        public DeleteProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
         public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _unitOfWork.ProductRepository.GetById(request.Id);

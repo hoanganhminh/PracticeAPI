@@ -2,19 +2,13 @@
 using MediatR;
 using PracticeAPI.Models.Data.ResponseDTO;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Category.Queries.GetCategoryById
 {
-    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryResponseDTO>
+    public class GetCategoryByIdQueryHandler : BaseService, IRequestHandler<GetCategoryByIdQuery, CategoryResponseDTO>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
-        }
+        public GetCategoryByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
 
         public async Task<CategoryResponseDTO> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {

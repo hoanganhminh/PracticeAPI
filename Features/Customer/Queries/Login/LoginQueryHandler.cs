@@ -1,22 +1,18 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Features.Category.Commands.UpdateCategory;
 using PracticeAPI.Models.Data.ResponseDTO;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 using PracticeAPI.Services.Contracts;
 
 namespace PracticeAPI.Features.Customer.Queries.Login
 {
-    public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginResponseDTO>
+    public class LoginQueryHandler : BaseService, IRequestHandler<LoginQuery, LoginResponseDTO>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
 
-        public LoginQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService)
+        public LoginQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ITokenService tokenService) : base(unitOfWork, mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
             this._tokenService = tokenService;
         }
 

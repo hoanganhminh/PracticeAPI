@@ -1,22 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
-using PracticeAPI.Features.Category.Commands.UpdateCategory;
 using PracticeAPI.Models.Data.ResponseDTO;
 using PracticeAPI.Repositories.Contracts;
+using PracticeAPI.Services;
 
 namespace PracticeAPI.Features.Customer.Queries.GetCustomerById
 {
-    public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, CustomerResponseDTO>
+    public class GetCustomerByIdQueryHandler : BaseService, IRequestHandler<GetCustomerByIdQuery, CustomerResponseDTO>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GetCustomerByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
-        }
-
+        public GetCustomerByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
         public async Task<CustomerResponseDTO> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
             var customer = await _unitOfWork.CustomerRepository.GetById(request.CustomerId);
